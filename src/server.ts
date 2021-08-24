@@ -1,21 +1,18 @@
-import * as Fastify from 'fastify'
-import { configureAuthPlugin, configureSwaggerPlugin } from './plugins'
+import fastify, { FastifyServerOptions } from "fastify";
 
-export default function createServer(opts?: Fastify.ServerOptions) {
-  const fastify = Fastify(opts)
+export default function createServer(opts?: FastifyServerOptions) {
+  const app = fastify(opts);
 
-  configureSwaggerPlugin(fastify)
-  configureAuthPlugin(fastify)
+  app.get("/", async () => {
+    return { hello: "world" };
+  });
 
-  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-  fastify.get('/', async (request, reply) => {
-    return { hello: 'world' }
-  })
+  app.get<{ Querystring: { handle: string } }>(
+    "/twitter",
+    async (request, _reply) => {
+      return { twitterHandle: request.query.handle };
+    }
+  );
 
-  /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
-  fastify.get('/twitter', async (request, _reply) => {
-    return { twitterHandle: request.query.handle }
-  })
-
-  return fastify
+  return fastify();
 }
