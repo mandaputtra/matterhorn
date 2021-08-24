@@ -14,5 +14,5 @@ export default function createServer(opts?: FastifyServerOptions) {
     }
   );
 
-  return fastify();
+  return fastify;
 }

@@ -15,9 +15,10 @@ const port: number = parseInt(JSON.stringify(process.env.PORT), 10) || 3000;
 const start = async () => {
   const fastify = createServer({
     logger: log,
-  });
+  })();
 
   try {
+    console.log(port);
     await fastify.listen(port);
     fastify.log.info(`Matterhorn server started on port ${port}`);
   } catch (err) {
